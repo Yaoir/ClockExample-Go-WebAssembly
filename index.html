@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>Go WebAssembly - Clock</title>
+
+		<meta name="description=" content="Digital Clock in WebAssembly, Go Programming Language">
+
+		<!-- favicon -->
+		<link rel="shortcut icon" href="./favicon.ico">
+		<link rel="icon" href="./favicon.ico?v=1">
+
+		<!-- CSS for this page -->
+		<link rel="stylesheet" href="styles.css">
+
+		<!-- Javascript glue code -->
+		<script src="wasm_exec.js"></script>
+		<script>
+			const go = new Go();
+			WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+				go.run(result.instance);
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="clock" id="clock"></div>
+	</body>
+
+</html>

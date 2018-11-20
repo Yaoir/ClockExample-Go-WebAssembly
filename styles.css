@@ -1,0 +1,30 @@
+/* styles.css for Digital Clock */
+
+html, body
+{
+	background-image: url(backgnd_tile.gif);
+	font-family: Verdana, Geneva, sans-serif;
+	overflow: visible;
+
+        /* prevent selection of text, images, or other things */
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+}
+
+div.clock
+{
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 48px;
+	color: brown;
+	/* center vertically */
+	position: absolute;
+	top: calc(50% - 24px);
+	/* center horizontally */
+	width: calc(100% - 10px);
+	text-align: center;
+}
+
+/* End */
