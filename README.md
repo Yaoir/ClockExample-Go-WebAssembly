@@ -1,6 +1,10 @@
+### Release Notes
+
+This has been updated to work with Go version 1.12. It will no longer work with previous versions of Go because the function js.NewCallback() in 1.11 was replaced by js.FuncOf() in 1.12.
+
 # Digital Clock
 
-This is a very simple example showing how to implement a timer in Go/WebAssembly. I decided to write it up because at this time (November 2018), Go's WebAssembly support is still very new and there are few good tutorial examples online.
+This is a very simple example showing how to implement a timer in Go/WebAssembly. I decided to write it up because at the time (November 2018), Go's WebAssembly support was still very new and there were few good tutorial examples online.
 
 ### Example in JavaScript
 
@@ -55,7 +59,7 @@ again gets the JavaScript global object, gets its document object, and calls `do
 The last part is to set up a timer event. Rather than using setTimer() every time we update the time, let's set up an interval timer to deliver timer events every 200 ms, and call the update code from that.
 
 ```
-timer_cb := js.NewCallback(update_time)
+timer_cb := js.FuncOf(update_time)
 ```
 
 Creates a callback to `function update_time()` that contains the above Go code. Then
@@ -71,16 +75,17 @@ calls the JavaScript `setInterval()` function to run the callback every 200 mill
 Here is the full Go code:
 
 ```
-func update_time(args []js.Value) {
+func update_time(this js.Value, args []js.Value) interface{} {
         s := js.Global().Get("Date").New().Call("toLocaleTimeString").String()
         js.Global().Get("document").Call("getElementById", "clock").Set("textContent", s)
+	return nil
 }
 ```
 
 and in main(),
 
 ```
-timer_cb := js.NewCallback(update_time)
+timer_cb := js.FuncOf(update_time)
 js.Global().Call("setInterval",timer_cb,"200")
 ```
 
@@ -118,7 +123,7 @@ on your computer, start the web server, like this
 
 ```
 $ go run webserver.go
-2018/11/20 12:43:02 listening on ":8080"...
+2019/02/26 09:34:55 listening on ":8080"...
 ```
 
 then direct your browser to http://localhost:8080
@@ -130,7 +135,7 @@ then direct your browser to http://localhost:8080
 
 ### Copyright
 
-	Copyright 2018 Jay Ts
+	Copyright 2018-2019 Jay Ts
 
 	Released under the GNU Public License, version 3.0 (GPLv3)
 	(http://www.gnu.org/licenses/gpl.html)
